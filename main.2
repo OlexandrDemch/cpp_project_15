@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <windows.h>
+
+int main() {
+    SetConsoleOutputCP(1251);
+    std::string text = "Це деякий текст. Це друге речення. А ось третє!";
+    std::string wordToCount;
+    std::cout << "Введіть слово для підрахунку: ";
+    std::cin >> wordToCount;
+
+    int wordCount = 0;
+    size_t pos = text.find(wordToCount);
+    while (pos != std::string::npos) {
+        ++wordCount;
+        pos = text.find(wordToCount, pos + wordToCount.length());
+    }
+
+    int sentenceCount = 0;
+    for (char c : text) {
+        if (c == '.' || c == '!') {
+            ++sentenceCount;
+        }
+    }
+
+    int dotCount = std::count(text.begin(), text.end(), '.');
+    int commaCount = std::count(text.begin(), text.end(), ',');
+
+    std::reverse(text.begin(), text.end());
+
+    size_t start = 0;
+    while (start < text.length()) {
+        size_t end = text.find('.', start);
+        if (end == std::string::npos) {
+            end = text.length() - 1;
+        }
+        std::reverse(text.begin() + start, text.begin() + end + 1);
+        start = end + 2; 
+    }
+
+    std::cout << "Кількість входжень слова '" << wordToCount << "': " << wordCount << std::endl;
+    std::cout << "Кількість речень у тексті: " << sentenceCount << std::endl;
+    std::cout << "Кількість точок: " << dotCount << std::endl;
+    std::cout << "Кількість ком: " << commaCount << std::endl;
+    std::cout << "Перевернутий текст: " << text << std::endl;
+
+    return 0;
+}
